@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.UserResource;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -29,6 +31,8 @@ public class LoginService {
     public void socialLogin(String code, String registrationId) {
         String accessToken = getAccessToken(code, registrationId);
         JsonNode userResourceNode = getUserResource(accessToken, registrationId);
+        System.out.println("code = " + code);
+        System.out.println("registrationId = " + registrationId);
         System.out.println("userResourceNode = " + userResourceNode);
 
         String id = userResourceNode.get("id").asText();
