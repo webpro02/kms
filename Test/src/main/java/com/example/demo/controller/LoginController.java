@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 @RestController
 @RequestMapping(value = "/login/oauth2", produces = "application/json")
 public class LoginController {
@@ -20,13 +21,12 @@ public class LoginController {
         loginService.socialLogin(code, registrationId);
     }
     
-    @RequestMapping(value="logout", method=RequestMethod.GET)
-    public String logoutMainGET(HttpServletRequest request) throws Exception{
-        
-        HttpSession session = request.getSession();
-        
-        session.invalidate();
-        
-        return "redirect:/main";
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public RedirectView logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 세션 무효화
+        }
+        return new RedirectView("/", true); // 홈으로 리다이렉트
     }
 }
